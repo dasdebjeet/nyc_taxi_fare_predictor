@@ -24,7 +24,7 @@ To install all the requirements for the project run
 
 In the app_V1 directory. After the modules have been installed you can run the project by using python
 
-	django-admin manage.py runserver
+	py manage.py runserver
 
 
 <br>
