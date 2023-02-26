@@ -42,9 +42,14 @@ After opening the application
 
 <br>
 
-[![Unsplash Scrapper Demo](./app_ui.png)](app_demo.mp4)
+[![Unsplash Scrapper Demo](./UI/app_ui.png)](https://user-images.githubusercontent.com/59967380/221402861-0172e975-9d3c-4046-88b8-519f8d44d5a9.mp4)
+
 
 <br>
+
+
+
+
 
 
 
