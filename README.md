@@ -1,12 +1,11 @@
 <!-- # <strong style="color:#ffffff;">Digit</strong>Recognizer. -->
-<img src="https://raw.githubusercontent.com/dasdebjeet/unsplash_scrapper/main/static/assests/banner_scapper_logo.png?token=GHSAT0AAAAAABVUUNRO2SYW35ELAYREYOGSY6OJR5A">
+<img src="./UI/GitHub_header.png" style="width:100%">
 <br><br>
 
-Unsplash Scrapper using Selenium, check it out... 👇👇<br>
-Made in python, HTML, CSS, jquery, and ajax.
+NYC Taxi Fare Predictor using Linear Regression, check it out... 👇👇<br>
+Made in python, django, HTML, CSS, jquery, and ajax.
 
-Unsplash Scrapper is an application for web scrapping and downloading multiple number of high quality images from Unsplash.
-
+NYC Taxi Fare Predictor is a WEB application that generates an NYC Taxi ticket by predicting the taxi fare using simple Linear Regression.
 <br>
 <!-- Website: https://dasdebjeet.github.io -->
 
@@ -15,7 +14,7 @@ Unsplash Scrapper is an application for web scrapping and downloading multiple n
 
 Clone the project:
 
-    git@github.com:dasdebjeet/unsplash_scrapper.git
+    git@github.com:dasdebjeet/nyc_taxi_fare_predictor.git
 
 ## How to run Python script
 
@@ -23,35 +22,23 @@ To install all the requirements for the project run
 
 	pip install -r requirements.txt
 
-In the root directory. After the modules have been installed you can run the project by using python
+In the app_V1 directory. After the modules have been installed you can run the project by using python
 
-	python main.py
+	django-admin manage.py runserver
 
-## How to run the .exe file
-
-To run the .exe file just download the build folder
-
-	.\unsplash_scrapper\build\
-
-In the build directory. After the downloading the folder you can run the project by double clicking on the Unsplash Scrapper.exe file
-
-	.\unsplash_scrapper\build\exe.win-amd64-3.10\Unsplash Scrapper.exe
 
 <br>
-<img src="./app_ui.png" alt="demo">
+<img src="./UI/app_ui.png" alt="demo">
 <br><br>
 
 ## How to use the app
 
-After opening the Unsplash Scrapper
-1. Give the name of the image in **Image Name** you want to download
-2. Then, give the number of images you want to download **Number** *(minimum one image)*
-3. And select the folder where you want to download the images in **Select Destination Path *(Optional)***
-4. Click on the **Scrap** button, and wait for the images to be downloaded in the background
-5. You can see in the **Prompt** all the info about the process, and also in the console in the background
-6. After all the images are downloaded open the choosen folder path or the default folder which the Download folder
+After opening the application
 
-***Note:*** **The default download folder will of the Download folder of your Desktop or Laptop**
+1. Give the name of the passenger in the **Passenger Name**
+2. Give the number of passengers going to travel in the **Passenger Count** *(0 < passenger count <= 5)*
+3. Then give the pickup location and dropoff location in the **Pickup Location** & **Dropoff Location** respectively
+4. After giving all the inputs click on the Predict button and wait patiently while your Ticket is generated
 
 <br>
 
@@ -61,7 +48,7 @@ After opening the Unsplash Scrapper
 
 
 
- *Happy Scrapping...!*
+ *Hola! Enjoy the ride...*
 
 <br>
 
