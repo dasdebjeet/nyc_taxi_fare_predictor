@@ -1,0 +1,404 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>NYC Taxi Fare Predictor</title>
+
+        <!-- favicon -->
+        <link rel="icon" type="image/x-icon" href="./../static/favicon.png">
+
+
+        <!-- css -->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/choices.js/10.2.0/choices.css" integrity="sha512-uXn0jS70Olm5/kbgdAfBygyDVfYyCrsnBLmb1zBXAOGZVErN3WsWOXrqRyaNvXETZwi6L9X8lZJ1MtPjwMJU/g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+        <!--Jquery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/boosted/5.2.3/js/boosted.bundle.min.js" integrity="sha512-NCGrwJhPe7Df2eCPozXBFauqo2ybBtQ4AetT1GHiRCWOet5AfVJBYcNTUc0NYIGJK8xVVLZNTl9joZnLyEWJJQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/choices.js/10.2.0/choices.min.js" integrity="sha512-OrRY3yVhfDckdPBIjU2/VXGGDjq3GPcnILWTT39iYiuV6O3cEcAxkgCBVR49viQ99vBFeu+a6/AoFAkNHgFteg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+        <!--FontAwesome-->
+        <script src="https://kit.fontawesome.com/76c40a5f57.js" crossorigin="anonymous"></script>
+        <link href="https://pro.fontawesome.com/releases/v5.1.0/css/all.css" rel=" stylesheet">
+    </head>
+
+    <body>
+        <!-- fare_amount(x) ~ [year, hour, distance, passenger_count] -->
+        {% csrf_token %}
+        <div class="wrapper flexc">
+            <div class="container">
+                <h1>Nyc Taxi Fare Predictor</h1>
+                <div class="msg_section ">
+                    Error: Enter valid Pickup Location
+                </div>
+                <form class="taxi_det_form flexc">
+                    <div class="input_con psgName_inp" style="width: 100%;">
+                        <div class="label_text">Name</div>
+                        <input type="text" name="" class="form-control">
+                    </div>
+
+                    <div class="input_con psgCount_inp" style="width: 100%;">
+                        <div class="label_text">Passenger Count</div>
+                        <input type="number" name="" id="" min="1" max="5" class="form-control">
+                    </div>
+
+                    <div class="input_con pickup_inp">
+                        <div class="label_text">Pickup Location</div>
+
+
+                        <!-- AUTO COMPLETE DROPDOWN -->
+                        <select class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
+                            <option value="">...</option>
+                            <option value="57th Street-7th Avenue">57th Street-7th Avenue</option>
+                            <option value="W Times Square Hotel">W Times Square Hotel</option>
+                            <option value="Tribeca Park Cafe">Tribeca Park Cafe</option>
+                            <option value="1551, Broadway, Times Square">1551, Broadway, Times Square</option>
+                            <option value="31st Avenue, Jackson Heights">31st Avenue, Jackson Heights</option>
+                            <option value="East 15th Street">East 15th Street</option>
+                            <option value="Roebling Street, Williamsburg">Roebling Street, Williamsburg</option>
+                            <option value="745 Fifth Avenue">745 Fifth Avenue</option>
+                        </select>
+                    </div>
+
+                    <div class="input_con dropoff_inp">
+                        <div class="label_text">Dropoff Location</div>
+
+
+                        <!-- AUTO COMPLETE DROPDOWN -->
+                        <select class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
+                            <option value="">...</option>
+                            <option value="57th Street-7th Avenue">57th Street-7th Avenue</option>
+                            <option value="W Times Square Hotel">W Times Square Hotel</option>
+                            <option value="Tribeca Park Cafe">Tribeca Park Cafe</option>
+                            <option value="1551, Broadway, Times Square">1551, Broadway, Times Square</option>
+                            <option value="31st Avenue, Jackson Heights">31st Avenue, Jackson Heights</option>
+                            <option value="East 15th Street">East 15th Street</option>
+                            <option value="Roebling Street, Williamsburg">Roebling Street, Williamsburg</option>
+                            <option value="745 Fifth Avenue">745 Fifth Avenue</option>
+                        </select>
+                    </div>
+
+                    <button class="predict_btn">Predict</button>
+
+
+
+
+                    <div class="loader flexc">
+                        <svg class="car" width="102" height="40" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(2 1)" stroke="#FFBF00" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                                <path class="car__body" d="M47.293 2.375C52.927.792 54.017.805 54.017.805c2.613-.445 6.838-.337 9.42.237l8.381 1.863c2.59.576 6.164 2.606 7.98 4.531l6.348 6.732 6.245 1.877c3.098.508 5.609 3.431 5.609 6.507v4.206c0 .29-2.536 4.189-5.687 4.189H36.808c-2.655 0-4.34-2.1-3.688-4.67 0 0 3.71-19.944 14.173-23.902zM36.5 15.5h54.01" stroke-width="3" />
+                                <ellipse class="car__wheel--left" stroke-width="3.2" fill="#000000" cx="83.493" cy="30.25" rx="6.922" ry="6.808" />
+                                <ellipse class="car__wheel--right" stroke-width="3.2" fill="#000000" cx="46.511" cy="30.25" rx="6.922" ry="6.808" />
+                                <path class="car__line car__line--top" d="M22.5 16.5H2.475" stroke-width="3" />
+                                <path class="car__line car__line--middle" d="M20.5 23.5H.4755" stroke-width="3" />
+                                <path class="car__line car__line--bottom" d="M25.5 9.5h-19" stroke-width="3" />
+                            </g>
+                        </svg>
+
+
+                    </div>
+
+                </form>
+
+
+
+
+                <div class="model_container">
+                    <div class="ticket_wrap flexc">
+                        <div class="ticket_backBtn"><i class="fal fa-long-arrow-left"></i> Back</div>
+
+                        <div class="ticket_header">NYC TAXI Ticket</div>
+
+                        <div class="ticket_con">
+                            <div class="ticket_conLeft">
+                                <div class="ticket_content flexc">
+                                    <div class="psg_info info_pickupLoc">
+                                        <div class="title">pickup Location</div>
+                                        <div class="subtitle"><span class="pickup_data">NYC City</span></div>
+                                    </div>
+
+                                    <div class="arrow_icn flexc"><i class="far fa-long-arrow-right"></i></div>
+
+                                    <div class="psg_info info_pickupLoc">
+                                        <div class="title">dropoff Location</div>
+                                        <div class="subtitle"><span class="dropoff_data">Downtown</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ticket_conRight">
+
+                                <div class="cutoff_line"></div>
+                                <div class="dots dot_left"></div>
+                                <div class="dots dot_right"></div>
+
+                                <div class="ticket_info flexc">
+                                    <div class="psg_info info_pname">
+                                        <div class="title">name</div>
+                                        <div class="subtitle"><span class="psgName_data">Debjeet Das</span></div>
+                                    </div>
+
+
+                                    <div class="psg_info info_pcount">
+                                        <div class="title">passenger count</div>
+                                        <div class="subtitle"><span class="psgCnt_data">1</span></div>
+                                    </div>
+
+                                    <div class="psg_info info_pfare">
+                                        <div class="title">Fare</div>
+                                        <div class="subtitle">$ <span class="fare_data">10</span></div>
+                                    </div>
+
+                                    <div class="psg_info info_time">
+                                        <div class="subtitle"><span class="timeStamp_data">JUN-28-2017 AT 08:30 AM</span></div>
+                                    </div>
+
+
+
+                                    <div class="barcode_info">
+                                        <span class="tckCode_data">102108X</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="ticket_miniInfo flexc">
+                                    <div class="miniInfo_left">
+                                        <div class="barcode_info">
+                                            <span class="tckCode_data">102108X</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="miniInfo_right">
+                                        <div class="miniInfo_pname">#<span class="psgCnt_data">1</span> <span class="psgName_data">Debjeet Das</span></div>
+                                        <div class="miniInfo_des"><span class="pickup_data">NYC City</span> <i class="far fa-long-arrow-right"></i> <span class="dropoff_data">Downtown</span></div>
+
+                                        <div class="miniInfo_time"><span class="timeStamp_data">JUN-28-2017 AT 08:30 AM</span></div>
+                                    </div>
+
+                                    <div class="stamp">confirmed
+                                        <div class="stamp_subTitle">Taxi and Limousine Commission</div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <script>
+            const elmens = document.querySelectorAll('.selectpicker');
+            elmens.forEach((sorting) => {
+                const sortingchoices = new Choices(sorting, {
+                    placeholder: false,
+                    itemSelectText: ''
+                });
+
+
+                // Trick to apply your custom classes to generated dropdown menu
+                let sortingClass = sorting.getAttribute('class');
+                window.onload = function () {
+                    sorting.parentElement.setAttribute('class', sortingClass);
+                }
+
+            })
+
+
+            // time ---
+            // JAN-28-2023 AT 08:30 AM
+
+            var genTimeStamp = () => {
+                month_names_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+                var dt = new Date()
+
+                var date = dt.getDate()
+                if (date < 10) {
+                    date = '0' + date;
+                }
+
+                var month = dt.getMonth()
+                month = month_names_short[month].toUpperCase()
+
+                var year = dt.getFullYear()
+
+                var time = dt.toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                })
+
+                var timeStamp = month + "-" + date + "-" + year + " AT " + time
+
+                return timeStamp
+            }
+
+            // random number gen for barcode
+            // 102108X
+
+            var generateString = (length) => {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let result = '';
+                const charactersLength = characters.length;
+                for (let i = 0; i < length; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                return result;
+            }
+
+
+            var getToken = () => {
+                return $("input[name=csrfmiddlewaretoken]").val()
+            }
+
+            var resetForm = () => {
+                $(".psgName_inp>input").val("")
+                $(".psgCount_inp>input").val("")
+                // $('.pickup_inp').find(":selected").val("")
+                // $('.dropoff_inp select').val($(this).find('option:first').val());
+                // $("pickup_inp select:selected").prop("selected", false)
+                // $("dropoff_inp select:selected").prop("selected", false)
+
+                $(".selectpicker").remove();;
+            }
+
+            $(".ticket_backBtn").click(() => {
+                location.reload()
+                // resetForm()
+                // $(".model_container").css("visibility", "hidden")
+            })
+
+            $(".predict_btn").click((e) => {
+                e.preventDefault()
+                $(".loader").css("visibility", "visible")
+                var new_dt = new Date()
+
+
+                // inputs ---
+                var passenger_name = $(".psgName_inp>input").val()
+                var passenger_count = $(".psgCount_inp>input").val()
+
+                var pickup_inp = $('.pickup_inp').find(":selected").text()
+                var dropoff_inp = $('.dropoff_inp').find(":selected").text()
+
+                var msg_diplay = (msg) => {
+                    $(".loader").css("visibility", "hidden")
+                    $(".msg_section").css("visibility", "visible").text(msg)
+                }
+
+
+                if (passenger_name == "") {
+                    msg_diplay("Error: Enter valid Name")
+                } else if (passenger_count == "" || passenger_count == null) {
+                    msg_diplay("Error: Enter valid Passenger Count")
+                } else if (passenger_count <= 0) {
+                    msg_diplay("Error: Count should be MIN = 1")
+                } else if (passenger_count > 5) {
+                    msg_diplay("Error: Count should be MAX = 5")
+                } else if (pickup_inp == "...") {
+                    msg_diplay("Error: Enter valid Pickup Location")
+                } else if (dropoff_inp == "...") {
+                    msg_diplay("Error: Enter valid Dropoff Location")
+                } else if (pickup_inp == dropoff_inp) {
+                    msg_diplay("Error: Pickup and Dropoff location are same")
+                } else {
+                    $(".msg_section").css("visibility", "hidden").text("")
+                    // var fare = 0
+
+
+
+                    // ajax request
+                    $.ajax({
+                        url: "/",
+                        type: "POST",
+                        dataType: "json",
+                        data: JSON.stringify({
+                            passenger_name: passenger_name,
+                            passenger_count: passenger_count,
+                            pickup_inp: pickup_inp,
+                            dropoff_inp: dropoff_inp,
+                            yr: new_dt.getFullYear(),
+                            hrs: new_dt.getHours() - 1
+                        }),
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRFToken": getToken(), // don't forget to include the 'getCookie' function
+                        },
+                        success: (response) => {
+                            if (response.status == "ok") {
+                                $(".loader").css("visibility", "hidden")
+
+                                $(".model_container").css("visibility", "visible")
+                                $(".tckCode_data").text(generateString(7))
+                                $(".psgName_data").text(passenger_name)
+                                $(".psgCnt_data").text(passenger_count)
+                                $(".pickup_data").text(pickup_inp)
+                                $(".dropoff_data").text(dropoff_inp)
+                                $(".timeStamp_data").text(genTimeStamp())
+
+                                var fare = Math.round(response.fare * 100) / 100
+
+                                console.log("$ " + fare)
+                                $(".fare_data").text(fare)
+                            };
+                        },
+                        error: (error) => {
+                            console.log(error);
+                        }
+                    });
+
+
+
+
+                }
+
+
+
+
+
+
+
+            })
+
+            // fetch('/', {
+            //         method: "PUT",
+            //         credentials: "same-origin",
+            //         headers: {
+            //             "X-Requested-With": "XMLHttpRequest",
+            //             "X-CSRFToken": getToken(), // don't forget to include the 'getCookie' function
+            //         },
+            //         body: JSON.stringify({
+            //             payload: "data to send"
+            //         })
+            //     })
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         console.log(data);
+            //     });
+
+        </script>
+    </body>
+
+</html>
